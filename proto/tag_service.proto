@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package transport.api;
+
+option go_package = ".;pb";
+
+import "google/api/annotations.proto";
+import "error_message.proto";
+import "debug_message.proto";
+import "tag_message.proto";
+
+message TagListRequest {
+}
+
+message TagIdRequest {
+  int64 id = 1;
+}
+
+message TagSearchRequest {
+  string like = 1;
+}
+
+message TagListResponse {
+  repeated TagLite data = 1;
+  optional Error error = 2;
+  optional Debug debug = 3;
+}
+
+message TagResponse {
+  TagFull data = 1;
+  optional Error error = 2;
+  optional Debug debug = 3;
+}
+
+service Tags {
+  rpc list(TagListRequest) returns (TagListResponse){
+    option (google.api.http) = {
+      get: "/api/v1/tag"
+    };
+  };
+
+  rpc get(TagIdRequest) returns (TagResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/tag/{id}"
+    };
+  }
+
+  rpc search(TagSearchRequest) returns (TagListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/tag/search/{like}"
+    };
+  }
+
+  rpc put(TagLite) returns (TagResponse) {
+    option (google.api.http) = {
+      post : "/api/v1/tag"
+      body: "*"
+    };
+  }
+}

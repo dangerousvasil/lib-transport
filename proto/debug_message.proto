@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package transport.api;
+
+option go_package = ".;pb";
+
+message Debug {
+  repeated string messages = 1;
+}

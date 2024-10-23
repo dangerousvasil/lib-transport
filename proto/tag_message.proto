@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package transport.api;
+
+option go_package = ".;pb";
+
+import "google/rpc/timestamp.proto";
+
+message TagLite  {
+  int64 id = 1;
+  string name = 2;
+  string color = 3;
+  string description = 4;
+  bool is_deleted = 5;
+}
+
+message TagFull   {
+  int64 id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  string name = 4;
+  string color = 5;
+  string description = 6;
+  bool is_deleted = 7;
+}

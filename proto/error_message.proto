@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package transport.api;
+
+option go_package = ".;pb";
+
+message Error {
+  bool error = 1;
+  int32 code = 2;
+  string msg = 3;
+  string msg_details = 4;
+}
