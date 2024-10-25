@@ -54,7 +54,3 @@ func main() {
 	s.Stop()
 	slog.Info("done")
 }
-
-type Configs struct {
-	ScanStorageBucket string `mapstructure:"scan_storage_bucket"`
-}
