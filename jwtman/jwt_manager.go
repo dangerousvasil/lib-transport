@@ -50,8 +50,7 @@ func (manager *JWTManager) Generate(
 	tokenDuration time.Duration,
 	otp bool,
 ) (string, error) {
-	var claims UserClaims
-	claims = generateUserClaimsForUser(user, otp, tokenDuration)
+	claims := generateUserClaimsForUser(user, otp, tokenDuration)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(manager.secretKey))
 }

@@ -2,14 +2,13 @@ package service
 
 import (
 	"context"
-	"lib-transport/interceptor"
-	"lib-transport/jwtman"
-
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+	"lib-transport/interceptor"
+	"lib-transport/jwtman"
 	"log"
 	"net"
 	"net/http"
@@ -118,7 +117,7 @@ func (s *Service) runRESTServer(ctx context.Context, listener net.Listener, grpc
 
 	mux := runtime.NewServeMux()
 
-	dialOptions := []grpc.DialOption{grpc.WithInsecure()}
+	dialOptions := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
 	if err := s.registerRESTServers(ctx, mux, grpcEndpoint, dialOptions); err != nil {
 		log.Println("register")

@@ -4,21 +4,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"lib-transport/bgctx"
 	"lib-transport/jwtman"
 	"lib-transport/ptransport"
 	service "lib-transport/server"
 	"lib-transport/services/tags"
-	"time"
-
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 
 	"golang.org/x/exp/slog"
 	"google.golang.org/grpc"
-)
-
-const (
-	tokenDuration = 24 * 5 * time.Hour
 )
 
 func main() {

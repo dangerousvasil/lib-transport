@@ -78,7 +78,7 @@ func (interceptor *AuthInterceptor) authorize(ctx context.Context, method string
 		if len(gCookie) > 0 {
 			gHeaders := CookieHeader(gCookie[0])
 			for _, header := range gHeaders {
-				if header.Name == "X-VALUN-TOKEN" {
+				if header.Name == "X-TOKEN" {
 					accessToken = header.Value
 					break
 				}
