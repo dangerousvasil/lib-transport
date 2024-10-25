@@ -2,7 +2,7 @@ package tags
 
 import (
 	"context"
-	"lib-transport/transport"
+	"lib-transport/ptransport"
 )
 
 func NewTagsServer() *Server {
@@ -10,25 +10,25 @@ func NewTagsServer() *Server {
 }
 
 type Server struct {
-	transport.UnsafeTagsServer
+	ptransport.UnsafeTagsServer
 }
 
-func (s Server) List(ctx context.Context, request *transport.TagListRequest) (*transport.TagListResponse, error) {
+func (s Server) List(ctx context.Context, request *ptransport.TagListRequest) (*ptransport.TagListResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Server) Get(ctx context.Context, request *transport.TagIdRequest) (*transport.TagResponse, error) {
+func (s Server) Get(ctx context.Context, request *ptransport.TagIdRequest) (*ptransport.TagResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Server) Search(ctx context.Context, request *transport.TagSearchRequest) (*transport.TagListResponse, error) {
+func (s Server) Search(ctx context.Context, request *ptransport.TagSearchRequest) (*ptransport.TagListResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Server) Put(ctx context.Context, lite *transport.TagLite) (*transport.TagResponse, error) {
+func (s Server) Put(ctx context.Context, lite *ptransport.TagLite) (*ptransport.TagResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
