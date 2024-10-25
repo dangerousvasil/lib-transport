@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"lib-transport/bgctx"
 	"lib-transport/jwtman"
-	"lib-transport/pb"
 	service "lib-transport/server"
 	"lib-transport/services/tags"
+	"lib-transport/transport"
 	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -41,9 +41,9 @@ func main() {
 	tagServer := tags.NewTagsServer()
 
 	s := service.New(jwtManager, func(grpcServer *grpc.Server) {
-		pb.RegisterTagsServer(grpcServer, tagServer)
+		transport.RegisterTagsServer(grpcServer, tagServer)
 	}, func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-		if err = pb.RegisterTagsHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+		if err = transport.RegisterTagsHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 			return err
 		}
 

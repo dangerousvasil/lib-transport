@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package transport.api;
 
-option go_package = ".;pb";
+option go_package = ".;transport";
 
 import "google/rpc/timestamp.proto";
 

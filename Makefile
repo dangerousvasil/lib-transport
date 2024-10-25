@@ -1,14 +1,14 @@
 
 clean:
-	rm pb/*
+	-mkdir transport
+	-mkdir swagger
+	rm transport/*
 	rm swagger/*.json
 
 gen:
 	-make clean
-	-mkdir pb
-	-mkdir swagger
-	protoc --proto_path=proto proto/*.proto  --go_out=:pb --go-grpc_out=:pb \
- 		 --grpc-gateway_out=:pb \
+	protoc --proto_path=proto proto/*.proto  --go_out=:transport --go-grpc_out=:transport \
+ 		 --grpc-gateway_out=:transport \
  		 --grpc-gateway_opt generate_unbound_methods=true \
  		 --openapiv2_out=:swagger
 
