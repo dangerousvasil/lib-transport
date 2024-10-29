@@ -7,6 +7,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0
+	github.com/pkg/errors v0.9.1
 	github.com/zeebo/assert v1.3.1
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
 	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142

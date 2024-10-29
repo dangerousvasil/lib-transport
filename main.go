@@ -28,6 +28,9 @@ func main() {
 	serverType := ""
 	if *port > 0 && *portGW > 0 {
 		serverType = "both"
+		if *endPoint != "" {
+			log.Fatal("remote grpc endpoint must be empty")
+		}
 	} else if *port > 0 && *portGW == 0 {
 		serverType = "grpc"
 	} else if *port == 0 && *portGW > 0 {
@@ -51,7 +54,6 @@ func main() {
 		if err = ptransport.RegisterTagsHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 			return err
 		}
-
 		return nil
 	})
 
