@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"lib-transport/bgctx"
+	"lib-transport/bgserver"
 	"lib-transport/jwtman"
 	"lib-transport/ptransport"
-	service "lib-transport/server"
 	"lib-transport/services/tags"
+	"log"
 
 	"golang.org/x/exp/slog"
 	"google.golang.org/grpc"
@@ -18,13 +19,23 @@ import (
 func main() {
 	//signal listner
 	ctx := bgctx.InitCTX()
+	JwtKey := flag.String("JwtKey", "lksdhfkjasjkfagsjkafgkjsfbj", "the jwt key")
 
-	port := flag.Int("port", 8082, "the server port")
-	portGW := flag.Int("gw", 8081, "the gw port")
-	JwtKey := flag.String("JwtKey", "lksdhfkjasjkfagsjkafgkjsfbj", "the JwtKey port")
-	serverType := flag.String("type", "both", "type of server (grpc/rest/both)")
-	endPoint := flag.String("endpoint", "", "gRPC endpoint")
-	flag.Parse()
+	port := flag.Int("port", 8080, "the server port (0 - disable)")
+	portGW := flag.Int("gw", 8082, "the gateway api port (0 - disable)")
+	endPoint := flag.String("endpoint", "", "gRPC endpoint for remote server")
+
+	serverType := ""
+	if *port > 0 && *portGW > 0 {
+		serverType = "both"
+	} else if *port > 0 && *portGW == 0 {
+		serverType = "grpc"
+	} else if *port == 0 && *portGW > 0 {
+		serverType = "rest"
+		if *endPoint == "" {
+			log.Fatal("remote grpc endpoint must be set")
+		}
+	}
 
 	if *endPoint == "" {
 		*endPoint = fmt.Sprintf("127.0.0.1:%d", *port)
@@ -34,7 +45,7 @@ func main() {
 
 	tagServer := tags.NewTagsServer()
 
-	s := service.New(jwtManager, func(grpcServer *grpc.Server) {
+	s := bgserver.New(jwtManager, func(grpcServer *grpc.Server) {
 		ptransport.RegisterTagsServer(grpcServer, tagServer)
 	}, func(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 		if err = ptransport.RegisterTagsHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
@@ -45,9 +56,10 @@ func main() {
 	})
 
 	s.AddAccessibleRoles(tags.AccessibleRoles())
+	s.AddStatic(true)
 
 	// Start service
-	s.Start(ctx, *serverType, *endPoint, *port, *portGW)
+	s.Start(ctx, serverType, *endPoint, *port, *portGW)
 	slog.Info("Stop")
 	<-ctx.Done()
 

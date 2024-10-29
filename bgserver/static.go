@@ -1,4 +1,4 @@
-package service
+package bgserver
 
 import (
 	"github.com/dangerousvasil/swaggerui"
@@ -11,8 +11,8 @@ import (
 	"net/http"
 )
 
-const swaggerURL = "/api/v1/swagger/"
-const protocURL = "/api/v1/proto/"
+const swaggerURL = "/static/swagger/"
+const protocURL = "/static/proto/"
 
 func mountSwagger(mux *runtime.ServeMux) error {
 	slog.Info("mountSwagger")

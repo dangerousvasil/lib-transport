@@ -1,4 +1,4 @@
-package service
+package bgserver
 
 import (
 	"context"
@@ -46,6 +46,7 @@ type Service struct {
 	registerGRPCServers registerGRPCServers // ф-ия для RegisterServer
 	registerRESTServers registerRESTServers // ф-ия для RegisterServiceHandlerFromEndpoint
 	accessibleRoles     map[string][]string // TODO: подумать как это сделать более изящное задание доступов
+	mountStatic         bool
 }
 
 func (s *Service) Start(ctx context.Context, serverType, endPoint string, port int, portGW int) {
@@ -123,11 +124,14 @@ func (s *Service) runRESTServer(ctx context.Context, listener net.Listener, grpc
 		log.Println("register")
 		return err
 	}
-	if err := mountSwagger(mux); err != nil {
-		return err
-	}
-	if err := mountProtoc(mux); err != nil {
-		return err
+
+	if s.mountStatic {
+		if err := mountSwagger(mux); err != nil {
+			return err
+		}
+		if err := mountProtoc(mux); err != nil {
+			return err
+		}
 	}
 
 	go func() {
@@ -138,4 +142,8 @@ func (s *Service) runRESTServer(ctx context.Context, listener net.Listener, grpc
 	}()
 
 	return nil
+}
+
+func (s *Service) AddStatic(b bool) {
+	s.mountStatic = b
 }
