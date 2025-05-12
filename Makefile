@@ -3,8 +3,8 @@ clean:
 	## proto transport
 	-mkdir ptransport
 	-mkdir swagger
-	rm transport/*
-	rm swagger/*.json
+	-rm ptransport/*
+	-rm swagger/*.json
 
 gen:
 	-make clean
